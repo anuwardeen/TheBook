@@ -1,0 +1,18 @@
+{% extends "Book/base.html"%}
+{%block content%}
+<div>
+    <div class="container" style="margin-top:1em;">
+        <div class="row">
+            <div class="col-xs-12">
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="{% url 'createtopic' %}">Click here to Create!</a> </li>
+                    {%for item in title_list%}
+                    <li class="list-group-item">Title : <a href="{%url 'viewtopic' item.title%}" >{{item.title}}</a> </li>
+                    {%endfor%}
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

@@ -1,0 +1,52 @@
+{% extends "Book/base.html" %}
+{%block content%}
+<div id="register" class="animate form">
+    <form method="POST" autocomplete="on" class="form-horizontal">{% csrf_token %}
+        <h1> Sign up </h1>
+        <p>
+            <label for="username" class="username" >Your username</label>
+            <input id="username" name="username" required="required" type="text" placeholder="Monish" />
+        </p>
+        <p>
+            <label for="email" class="email" > Your email</label>
+            <input id="email" name="email" required="required" type="email" placeholder="mysupermail@mail.com"/>
+        </p>
+        <p>
+            <label for="password" class="password" >Your password </label>
+            <input id="password" name="password" required="required" type="password" placeholder="eg. monshX8df!90EO"/>
+        </p>
+        <p>
+            <label for="password_confirm" class="password_confirm" >Please confirm your password </label>
+            <input id="password_confirm" name="password_confirm" required="required" type="password" placeholder="eg. monshX8df!90EO"/>
+        </p>
+        {% if request.user.is_superuser %}
+        <p>
+            <label for="access_level1" class="access_level" >Grant Access level for New User</label>
+            <select name="access_level" id="access_level1">
+                <option value=1>1</option>
+                <option selected="selected" value=2>2</option>
+                <option value=3>3</option>
+                <option value=4>4</option>
+                <option value=5>5</option>
+            </select>
+        </p>
+        {%else%}
+        <p>
+            <label for="access_level2" class="access_level" >Grant Access level for New User</label>
+            <select name="access_level" id="access_level2">
+                <option value=1>1</option>
+                <option selected="selected" value=2>2</option>
+                <option value=3>3</option>
+            </select>
+        </p>
+        {%endif%}
+        <p class="signin button">
+            <input type="submit" value="Sign up"/>
+        </p>
+        <!--<p class="change_link">-->
+        <!--Already a member ?-->
+        <!--<a href="" class="to_register"> Go and log in </a>-->
+        <!--</p>-->
+    </form>
+</div>
+{%endblock%}

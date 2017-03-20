@@ -1,0 +1,15 @@
+{% extends "Book/base.html" %}
+{%block content%}
+<div id="register" class="animate form">
+    <form method="POST" autocomplete="on" class="form-horizontal">{% csrf_token %}
+        <div class="form-group">
+            {%for user in users%}
+            <input type="checkbox" name="username" value="{{user.username}}"><pre>{{user.username}}</pre><br>
+            {% endfor %}
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit" value="submit">
+            </div>
+        </div>
+    </form>
+</div>
+{%endblock%}

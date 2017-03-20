@@ -1,0 +1,16 @@
+{% extends "Book/base.html"%}
+{%block content%}
+<div class="container" style="margin-top:1em;">
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="list-group">
+                <li class="list-group-item">Title ID : {{content.pk}} </li>
+                <li class="list-group-item">Title : {{content.title}} </li>
+                <li class="list-group-item">Content : {{content.content}} </li>
+                <li class="list-group-item"><a href="{% url 'edittopic' content.pk%}">Click here to Edit!</a> </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+{%endblock%}

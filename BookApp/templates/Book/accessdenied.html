@@ -1,0 +1,14 @@
+{% extends "Book/base.html"%}
+{%block content%}
+<div class="container" style="margin-top:1em;">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>ACCESS Denied!</h2>
+                 <p>You will be redirected in few seconds</p>
+                <script>
+                    var timer = setTimeout(function() {window.location='http://127.0.0.1:8000/'}, 1500);
+                </script>
+            </div>
+        </div>
+</div>
+{% endblock%}

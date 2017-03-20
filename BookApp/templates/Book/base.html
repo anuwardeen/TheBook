@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>TheBook</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body style="padding:20px 20px 20px 20px;">
+    <div class="jumbotron" style="background-color:lightgrey">
+        <h1 align="center" style="color:#1a1a1a">TheBook</h1>
+        <div class="container">
+            <div class="jumbotron" style="padding:20px 20px 20px 20px ">
+            <h4 style="color:brown;text-transform:capitalize;float:left">Welcome {{request.user}}</h4>
+            <div align="right" >
+                <form method="POST" action="{% url 'logout' %}" >{%csrf_token%}
+                    <input type="submit" class="btn btn-primary" value="logout">
+                </form><br>
+                </div>
+                <div align="right">
+                    <a href="{% url 'index' %}">Home Page</a>&nbsp;&nbsp;
+                    <a href="{% url 'adduser' %}">Register-User</a>&nbsp;&nbsp;
+                    <a href="{% url 'deluser' %}">Delete-User</a>
+                </div>
+            </div>
+
+            <h2 style="background-color:lightgrey;padding:20px 20px 20px 20px " width="100%">DASHBOARD........</h2>
+            {% block content %}
+            {%endblock%}
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+<!--<html>-->
+<!--<head>-->
+<!--<title>TheBook</title>-->
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css">-->
+<!--<meta charset="utf-8">-->
+<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="jumbotron" style="background-color:lightblue;padding:20px 20px 20px 20px ">-->
+<!--<h3 style="color:brown;text-transform:capitalize;float:left">Welcome {{request.user}}</h3>-->
+<!--<div align="right" >-->
+<!--<a href="{% url 'adduser' %}"><h4>Register User</h4></a>-->
+
+
+
+<!--&lt;!&ndash;<a href="" style="padding-right:10px">Register new customer</a>&ndash;&gt;-->
+<!--</div>-->
+<!--<div >-->
+<!--<h2 style="clear:left;background-color:lightblue;padding:20px 20px 20px 20px " width="80%">DASHBOARD........</h2>-->
+<!--<div align="right">-->
+<!--<form method="POST" action="{% url 'logout' %}" >{%csrf_token%}-->
+<!--<input type="submit"  class="btn btn-primary" value="logout">-->
+<!--</form>-->
+<!--</div>-->
+<!--</div>-->
+
+
+<!--</div>-->
+<!---->
+<!--</body>-->
+<!--</html>-->
