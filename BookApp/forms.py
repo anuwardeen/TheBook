@@ -8,8 +8,8 @@ class CreateTopic(forms.ModelForm):
         model = Topic
         fields = "__all__"
 
-class EditUser(forms.ModelForm):
-
-    class Meta:
-        model = User
-        fields = "__all__"
+# class EditUser(forms.ModelForm):
+#
+#     class Meta:
+#         model = User
+#         fields = "__all__"

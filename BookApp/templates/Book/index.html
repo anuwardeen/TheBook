@@ -5,9 +5,15 @@
         <div class="row">
             <div class="col-xs-12">
                 <ul class="list-group">
-                    <li class="list-group-item"><a href="{% url 'createtopic' %}">Click here to Create!</a> </li>
+                    <li>
+                        <form method="POST" action="{% url 'search'%}">{% csrf_token %}
+                            <input type="text" name="title" class="title" id="title" placeholder="Search..." />
+                            <input type="submit" value="Go">
+                        </form>
+                    </li>
+                    <li class="list-group-item"><a href="{% url 'create-page' %}">Click here to Create!</a> </li>
                     {%for item in title_list%}
-                    <li class="list-group-item">Page : <a href="{%url 'viewtopic' item.title%}" >{{item.title}}</a> </li>
+                    <li class="list-group-item">Page : <a href="{% url 'view-page' topic_name=item.title %}" >{{item.title}}</a> </li>
                     {%endfor%}
                 </ul>
 

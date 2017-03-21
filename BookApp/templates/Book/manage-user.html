@@ -7,7 +7,7 @@
                 <ul class="list-group">
                     {%for user in users%}
                     <li class="list-group-item">
-                        <pre>{{user.username}}   {{user.email}}   <a href="{% url 'edituser' user.pk%}">Edit User Details</a>   <a href="{% url 'deluser' user.username %}">Delete User</a>    <a href="{% url 'change_password' user.username%}">Change Password</a></pre>
+                        <pre>{{user.username}}   {{user.email}}   <a href="{% url 'edit-user-details' user.pk%}">Edit User Details</a>   <a href="{% url 'delete-user' user.username %}">Delete User</a>    <a href="{% url 'change_password' user.username%}">Change Password</a></pre>
                     </li>
                     {%endfor%}
                 </ul>

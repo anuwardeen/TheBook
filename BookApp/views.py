@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.views import View
-from django.contrib.auth.decorators import login_required,user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import *
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from .models import *
 from django.urls import reverse
 from django.contrib.auth import update_session_auth_hash
@@ -20,6 +20,14 @@ def index(request):
 
 ###################################################################################################
 
+def search(request):
+    if request.method=="POST":
+        title = request.POST.get('title')
+        print(request.POST)
+        return HttpResponseRedirect(reverse('view-page',kwargs={'topic_name': title}))
+
+
+###################################################################################################
 
 @login_required
 def viewPage(request, topic_name):
@@ -31,30 +39,44 @@ def viewPage(request, topic_name):
         access_level = obj.access_level
         topic= Topic.objects.get(title=topic_name)
         if topic.min_accessing_level <= access_level:
-            return render(request,"Book/topicView.html", {"content":topic})
+            return render(request,"Book/view-page.html", {"content":topic})
         else:
-            return render(request,"Book/accessdenied.html")
+            return render(request,"Book/access-denied.html")
     else:
-        return HttpResponseRedirect(reverse('createtopic'))
+        return HttpResponseRedirect(reverse('create-page'))
 
 
 ###################################################################################################
 
+def deletePage(request):
+    if request.method == "GET":
+        obj = AccessLevel.objects.get(user=request.user)
+        access_level = obj.access_level
+        if access_level ==5:
+            title_list = Topic.objects.all().values('title')
+            return render(request, "Book/delete-page.html", {"title_list": title_list})
 
+    if request.method == "POST":
+        title_list = request.POST.getlist('title')
+        Topic.objects.filter(title__in=title_list).delete()
+        return HttpResponseRedirect(reverse('index'))
+
+
+###################################################################################################
 
 @login_required
 def createPage(request):
 
     if request.method=="GET":
         form = CreateTopic()
-        return render(request, "Book/createTopic.html", {"form":form})
+        return render(request, "Book/create-page.html", {"form":form})
     else:
         form = CreateTopic(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('viewtopic', kwargs={'topic_name': request.POST.get('title')}))
+            return HttpResponseRedirect(reverse('view-page', kwargs={'topic_name': request.POST.get('title')}))
         else:
-            return render(request, "Book/createTopic.html", {"form":form})
+            return render(request, "Book/create-page.html", {"form":form})
 
 
 
@@ -68,7 +90,7 @@ def editPage(request, topic_id=0):
     if request.method=="GET":
         data=Topic.objects.get(topic_id=topic_id)
         form = CreateTopic(instance=data)
-        return render(request, "Book/edittopic.html",{"form":form,"id":data.topic_id})
+        return render(request, "Book/edit-page.html",{"form":form,"id":data.topic_id})
 
     if request.method=="POST":
         topic_id= request.POST.get('id')
@@ -81,7 +103,7 @@ def editPage(request, topic_id=0):
         obj.content=content
         obj.min_accessing_level=access_level
         obj.save()
-        return HttpResponseRedirect(reverse('viewtopic', kwargs={'topic_name': title}))
+        return HttpResponseRedirect(reverse('view-page', kwargs={'topic_name': title}))
 
 
 
@@ -113,9 +135,9 @@ def manageUser(request):
     access_level = obj.access_level
     if access_level == 5:
         users = User.objects.all()[1:]
-        return render(request, "Book/manageuser.html", {"users":users})
+        return render(request, "Book/manage-user.html", {"users":users})
     else:
-        return render(request, "Book/accessdenied.html")
+        return render(request, "Book/access-denied.html")
 
 
 #####################################################################################################
@@ -124,7 +146,7 @@ def manageUser(request):
 @login_required
 def deleteUser(request, username):
     User.objects.get(username=username).delete()
-    return HttpResponseRedirect(reverse('manageuser'))
+    return HttpResponseRedirect(reverse('manage-user'))
 
 
 #####################################################################################################
@@ -134,7 +156,7 @@ def deleteUser(request, username):
 def editUserDetails(request, id=0):
     if request.method == "GET":
         user = User.objects.get(pk=id)
-        return render(request,"Book/edituserdetails.html", {"user":user})
+        return render(request,"Book/edit-user-details.html", {"user":user})
 
     if request.method=="POST":
         user = User.objects.get(pk=request.POST.get('pk'))
@@ -145,7 +167,7 @@ def editUserDetails(request, id=0):
         obj = AccessLevel.objects.get(user = user)
         obj.access_level = request.POST.get('access_level')
         obj.save()
-        return HttpResponseRedirect(reverse('manageuser'))
+        return HttpResponseRedirect(reverse('manage-user'))
 
 
 #####################################################################################################
@@ -158,7 +180,7 @@ def changePassword(request, username=""):
         user.set_password(request.POST.get('new_password1'))
         update_session_auth_hash(request, user)
         user.save()
-        return HttpResponseRedirect(reverse("manageuser"))
+        return HttpResponseRedirect(reverse("manage-user"))
     else:
         form = PasswordChangeForm(username)
         return render(request, 'accounts/change_password.html', {'form': form,"username":username})

@@ -6,19 +6,23 @@ urlpatterns = [
 
     url(r'^$', views.index, name="index"),
 
-    url(r'view/page/(?P<topic_name>\w+)$',views.viewPage,name="viewtopic"),
+    url(r'^search/', views.search, name="search"),
 
-    url(r'^create/page/$', views.createPage, name="createtopic"),
+    url(r'^view/page/(?P<topic_name>\w+)$',views.viewPage,name="view-page"),
 
-    url(r'^edit/page/(?P<topic_id>\d+)/$', views.editPage, name="edittopic"),
+    url(r'^delete/page/', views.deletePage, name="delete-page"),
 
-    url(r'^register/user/$', views.addNewUser.as_view(), name="adduser"),
+    url(r'^create/page/$', views.createPage, name="create-page"),
 
-    url(r'^del/user/(?P<username>\w+)/$', views.deleteUser, name="deluser"),
+    url(r'^edit/page/(?P<topic_id>\d+)/$', views.editPage, name="edit-page"),
 
-    url(r'^manage/user/$', views.manageUser, name="manageuser"),
+    url(r'^register/user/$', views.addNewUser.as_view(), name="add-user"),
 
-    url(r'^edit/user/details/(?P<id>\d+)$', views.editUserDetails, name="edituser"),
+    url(r'^del/user/(?P<username>\w+)/$', views.deleteUser, name="delete-user"),
+
+    url(r'^manage/user/$', views.manageUser, name="manage-user"),
+
+    url(r'^edit/user/details/(?P<id>\d+)$', views.editUserDetails, name="edit-user-details"),
 
     url(r'^password/(?P<username>\w+)/$', views.changePassword, name='change_password'),
 
