@@ -1,0 +1,35 @@
+{% extends "Book/base.html" %}
+{%block content%}
+<div id="register" class="animate form">
+    <form method="POST" autocomplete="on" class="form-horizontal">{% csrf_token %}
+        <h1> Sign up </h1>
+        <p>
+            <label for="pk" class="pk" >User ID</label>
+            <input id="pk" name="pk" required="required" type="text" value={{user.pk}} readonly/>
+        </p>
+        <p>
+            <label for="username" class="username" >Your username</label>
+            <input id="username" name="username" required="required" type="text" value={{user.username}} />
+        </p>
+        <p>
+            <label for="email" class="email" > Your email</label>
+            <input id="email" name="email" required="required" type="email" value={{user.email}} />
+        </p>
+        <p>
+            <label for="access_level" class="access_level" >Grant Access level for New User</label>
+            <select name="access_level" id="access_level">
+                <option value=1>1</option>
+                <option selected="selected" value=2>2</option>
+                <option value=3>3</option>
+                <option value=4>4</option>
+                <option value=5>5</option>
+            </select>
+        </p>
+
+        <p class="signin button">
+            <input type="submit" value="Submit"/>
+        </p>
+
+    </form>
+</div>
+{%endblock%}

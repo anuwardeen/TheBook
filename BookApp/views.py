@@ -6,6 +6,9 @@ from .forms import *
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import *
 from django.urls import reverse
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
 ###################################################################################################
 
 
@@ -79,6 +82,8 @@ def edit_topic(request, topic_id=0):
 
 
 ###################################################################################################
+
+
 class add_new_user(LoginRequiredMixin, View):
 
     def get(self, request):
@@ -92,18 +97,76 @@ class add_new_user(LoginRequiredMixin, View):
         new_user = User.objects.create_user(request.POST.get("username"),request.POST.get("email"),request.POST.get("password"),is_staff=True)
         AccessLevel.objects.create(user = new_user,access_level= int(request.POST.get('access_level')))
         return render(request, "registration/registeruser.html")
-###################################################################################################
+
+
+
+#####################################################################################################
+
+
 @login_required
-def delete_user(request):
-    if request.method=="GET":
-        obj = AccessLevel.objects.get(user=request.user)
-        access_level = obj.access_level
-        if access_level == 5:
-            users = User.objects.all()
-            return render(request,"Book/deluser.html",{"users":users})
-        else:
-            return render(request, "Book/accessdenied.html")
+def user_list(request):
+    obj = AccessLevel.objects.get(user=request.user)
+    access_level = obj.access_level
+    if access_level == 5:
+        users = User.objects.all()[1:]
+        return render(request, "Book/manageuser.html", {"users":users})
+    else:
+        return render(request, "Book/accessdenied.html")
+
+#####################################################################################################
+
+
+@login_required
+def delete_user(request, username):
+    User.objects.get(username=username).delete()
+    return HttpResponseRedirect(reverse('manageuser'))
+
+
+#####################################################################################################
+
+@login_required
+def edit_user(request, id=0):
+    if request.method == "GET":
+        user = User.objects.get(pk=id)
+        return render(request,"Book/edituserdetails.html", {"user":user})
+
     if request.method=="POST":
-        username = request.POST.getlist("username")
-        User.objects.filter(username__in=username).delete()
-        return render(request,"Book/deluser.html",{"users":User.objects.all()})
+        user = User.objects.get(pk=request.POST.get('pk'))
+        user.username = request.POST.get('username')
+
+        user.email = request.POST.get('email')
+        user.save()
+        obj = AccessLevel.objects.get(user = user)
+        obj.access_level = request.POST.get('access_level')
+        obj.save()
+        return HttpResponseRedirect(reverse('manageuser'))
+
+#####################################################################################################
+
+
+def change_password(request, username=""):
+    if request.method == 'POST':
+        user=User.objects.get(username=request.POST.get('username'))
+        user.set_password(request.POST.get('new_password1'))
+        update_session_auth_hash(request, user)
+        user.save()
+        return HttpResponseRedirect(reverse("manageuser"))
+    else:
+        form = PasswordChangeForm(username)
+        return render(request, 'accounts/change_password.html', {'form': form,"username":username})
+
+#####################################################################################################
+# @login_required
+# def delete_user(request):
+#     if request.method=="GET":
+#         obj = AccessLevel.objects.get(user=request.user)
+#         access_level = obj.access_level
+#         if access_level == 5:
+#             users = User.objects.all()
+#             return render(request,"Book/deluser.html",{"users":users})
+#         else:
+#             return render(request, "Book/accessdenied.html")
+#     if request.method=="POST":
+#         username = request.POST.getlist("username")
+#         User.objects.filter(username__in=username).delete()
+#         return render(request,"Book/deluser.html",{"users":User.objects.all()})
