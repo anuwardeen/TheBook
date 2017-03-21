@@ -22,7 +22,7 @@ def index(request):
 
 
 @login_required
-def topic(request, topic_name):
+def viewPage(request, topic_name):
 
     topic_list = Topic.objects.values_list('title', flat=True)
 
@@ -41,8 +41,9 @@ def topic(request, topic_name):
 ###################################################################################################
 
 
+
 @login_required
-def create_topic(request):
+def createPage(request):
 
     if request.method=="GET":
         form = CreateTopic()
@@ -56,11 +57,13 @@ def create_topic(request):
             return render(request, "Book/createTopic.html", {"form":form})
 
 
+
 ###################################################################################################
 
 
+
 @login_required
-def edit_topic(request, topic_id=0):
+def editPage(request, topic_id=0):
 
     if request.method=="GET":
         data=Topic.objects.get(topic_id=topic_id)
@@ -81,13 +84,14 @@ def edit_topic(request, topic_id=0):
         return HttpResponseRedirect(reverse('viewtopic', kwargs={'topic_name': title}))
 
 
+
 ###################################################################################################
 
 
-class add_new_user(LoginRequiredMixin, View):
+
+class addNewUser(LoginRequiredMixin, View):
 
     def get(self, request):
-        print("Hello")
         return render(request, "registration/registeruser.html")
 
     def post(self, request):
@@ -104,7 +108,7 @@ class add_new_user(LoginRequiredMixin, View):
 
 
 @login_required
-def user_list(request):
+def manageUser(request):
     obj = AccessLevel.objects.get(user=request.user)
     access_level = obj.access_level
     if access_level == 5:
@@ -113,19 +117,21 @@ def user_list(request):
     else:
         return render(request, "Book/accessdenied.html")
 
+
 #####################################################################################################
 
 
 @login_required
-def delete_user(request, username):
+def deleteUser(request, username):
     User.objects.get(username=username).delete()
     return HttpResponseRedirect(reverse('manageuser'))
 
 
 #####################################################################################################
 
+
 @login_required
-def edit_user(request, id=0):
+def editUserDetails(request, id=0):
     if request.method == "GET":
         user = User.objects.get(pk=id)
         return render(request,"Book/edituserdetails.html", {"user":user})
@@ -141,10 +147,12 @@ def edit_user(request, id=0):
         obj.save()
         return HttpResponseRedirect(reverse('manageuser'))
 
+
 #####################################################################################################
 
 
-def change_password(request, username=""):
+
+def changePassword(request, username=""):
     if request.method == 'POST':
         user=User.objects.get(username=request.POST.get('username'))
         user.set_password(request.POST.get('new_password1'))
@@ -155,18 +163,5 @@ def change_password(request, username=""):
         form = PasswordChangeForm(username)
         return render(request, 'accounts/change_password.html', {'form': form,"username":username})
 
+
 #####################################################################################################
-# @login_required
-# def delete_user(request):
-#     if request.method=="GET":
-#         obj = AccessLevel.objects.get(user=request.user)
-#         access_level = obj.access_level
-#         if access_level == 5:
-#             users = User.objects.all()
-#             return render(request,"Book/deluser.html",{"users":users})
-#         else:
-#             return render(request, "Book/accessdenied.html")
-#     if request.method=="POST":
-#         username = request.POST.getlist("username")
-#         User.objects.filter(username__in=username).delete()
-#         return render(request,"Book/deluser.html",{"users":User.objects.all()})

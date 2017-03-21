@@ -1,0 +1,55 @@
+#app {
+}
+h1 {
+  text-align: center;
+}
+.container {
+  width: 600px;
+  margin: auto;
+}
+
+.grid td {
+  width: 135px;
+  height: 50px;
+  padding: 50px 30px;
+  border: 2px solid orange;
+  text-align: center;
+  float: left;
+  margin: 5px;
+}
+.grid td:hover {
+  opacity: .7;
+  cursor: pointer;
+}
+.reserved {
+  margin-top:100px;
+  background: orange;
+  color: #fff;
+  display: inline-block;
+  pointer-events : none;
+  disabled;
+  content: 'RESERVED';
+}
+.reserved::after {
+  content: 'RESERVED'
+}
+.available::after {
+  content: 'AVAILABLE'
+}
+.available {
+  color: #333;
+}
+li {
+  list-style: none;
+}
+.reservation{
+    margin-top: 100px;
+} 
+.selected {
+  background: orange;
+  color: #fff;
+  display: inline-block;
+}
+.selected::after {
+  content: 'SELECTED';
+}  

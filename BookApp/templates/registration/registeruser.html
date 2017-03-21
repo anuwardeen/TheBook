@@ -3,25 +3,25 @@
 <div id="register" class="animate form">
     <form method="POST" autocomplete="on" class="form-horizontal">{% csrf_token %}
         <h1> Sign up </h1>
-        <p>
-            <label for="username" class="username" >Your username</label>
+        <div class="form-group">
+            <label for="username" class="control-label col-sm-2" >Your username</label>
             <input id="username" name="username" required="required" type="text" placeholder="Monish" />
-        </p>
-        <p>
-            <label for="email" class="email" > Your email</label>
+        </div>
+        <div class="form-group">
+            <label for="email"class="control-label col-sm-2" > Your email</label>
             <input id="email" name="email" required="required" type="email" placeholder="mysupermail@mail.com"/>
-        </p>
-        <p>
-            <label for="password" class="password" >Your password </label>
+        </div>
+        <div class="form-group">
+            <label for="password" class="control-label col-sm-2" >Your password </label>
             <input id="password" name="password" required="required" type="password" placeholder="eg. monshX8df!90EO"/>
-        </p>
-        <p>
-            <label for="password_confirm" class="password_confirm" >Please confirm your password </label>
+        </div>
+        <div class="form-group">
+            <label for="password_confirm" class="control-label col-sm-2" >Please confirm your password </label>
             <input id="password_confirm" name="password_confirm" required="required" type="password" placeholder="eg. monshX8df!90EO"/>
-        </p>
+        </div>
         {% if request.user.is_superuser %}
-        <p>
-            <label for="access_level1" class="access_level" >Grant Access level for New User</label>
+        <div class="form-group">
+            <label for="access_level1" class="control-label col-sm-2" >Grant Access level for New User</label>
             <select name="access_level" id="access_level1">
                 <option value=1>1</option>
                 <option selected="selected" value=2>2</option>
@@ -29,20 +29,22 @@
                 <option value=4>4</option>
                 <option value=5>5</option>
             </select>
-        </p>
+        </div>
         {%else%}
-        <p>
-            <label for="access_level2" class="access_level" >Grant Access level for New User</label>
+        <div class="form-group">
+            <label for="access_level2" class="control-label col-sm-2" >Grant Access level for New User</label>
             <select name="access_level" id="access_level2">
                 <option value=1>1</option>
                 <option selected="selected" value=2>2</option>
                 <option value=3>3</option>
             </select>
-        </p>
+        </div>
         {%endif%}
-        <p class="signin button">
-            <input type="submit" value="Sign up"/>
-        </p>
+        <div class="form-group">
+            <div class="control-label col-sm-2">
+                <input type="submit" value="Sign up"/>
+            </div>
+        </div>
     </form>
 </div>
 {%endblock%}
