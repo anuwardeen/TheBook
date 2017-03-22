@@ -6,9 +6,13 @@ urlpatterns = [
 
     url(r'^$', views.index, name="index"),
 
+    url(r'^profile/$', views.profileView, name="profile"),
+
     url(r'^search/', views.search, name="search"),
 
     url(r'^view/page/(?P<topic_name>[A-Za-z0-9 -]+)/$',views.viewPage,name="view-page"),
+
+    url(r'^page-not-found/(?P<topic_name>[A-Za-z0-9 -]+)/$', views.pageNotFound ,name="page-not-found"),
 
     url(r'^delete/page/', views.deletePage, name="delete-page"),
 
@@ -27,4 +31,5 @@ urlpatterns = [
     url(r'^password/(?P<username>\w+)/$', views.changePassword, name='change_password'),
 
 ]
+
 

@@ -23,7 +23,6 @@ def index(request):
 def search(request):
     if request.method=="POST":
         title = request.POST.get('title')
-        print(request.POST)
         return HttpResponseRedirect(reverse('view-page',kwargs={'topic_name': title}))
 
 
@@ -33,8 +32,6 @@ def search(request):
 def viewPage(request, topic_name):
 
     topic_list = Topic.objects.values_list('title', flat=True)
-    print(topic_list)
-    print(topic_name)
     if topic_name in topic_list:
         obj = AccessLevel.objects.get(user = request.user)
         access_level = obj.access_level
@@ -44,8 +41,38 @@ def viewPage(request, topic_name):
         else:
             return render(request,"Book/access-denied.html")
     else:
-        return HttpResponseRedirect(reverse('create-page'))
+        return HttpResponseRedirect(reverse('page-not-found',kwargs={'topic_name': topic_name}))
 
+###################################################################################################
+
+def pageNotFound(request, topic_name):
+    return render(request,"Book/pagenotfound.html",{"topic_name":topic_name})
+
+
+###################################################################################################
+
+def profileView(request):
+    user = User.objects.get(username = request.user)
+    obj = AccessLevel.objects.get(user=user)
+    access_level = obj.access_level
+    return render(request, "Book/profile.html", {"user":user,"access_level":access_level})
+
+###################################################################################################
+
+
+@login_required
+def createPage(request):
+
+    if request.method=="GET":
+        form = CreateTopic()
+        return render(request, "Book/create-page.html", {"form":form})
+    else:
+        form = CreateTopic(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('view-page', kwargs={'topic_name': request.POST.get('title')}))
+        else:
+            return render(request, "Book/create-page.html", {"form":form})
 
 ###################################################################################################
 
@@ -59,29 +86,12 @@ def deletePage(request):
 
     if request.method == "POST":
         title_list = request.POST.getlist('title')
-        Topic.objects.filter(title__in=title_list).delete()
-        return HttpResponseRedirect(reverse('index'))
+    Topic.objects.filter(title__in=title_list).delete()
+    return HttpResponseRedirect(reverse('index'))
 
 
 ###################################################################################################
 
-@login_required
-def createPage(request):
-
-    if request.method=="GET":
-        form = CreateTopic()
-        return render(request, "Book/create-page.html", {"form":form})
-    else:
-        form = CreateTopic(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('view-page', kwargs={'topic_name': request.POST.get('title')}))
-        else:
-            return render(request, "Book/create-page.html", {"form":form})
-
-
-
-###################################################################################################
 
 
 
@@ -189,7 +199,7 @@ def changePassword(request, username=""):
             user.save()
             return HttpResponseRedirect(reverse("manage-user"))
         else:
-            return render(request,"accounts/change_password.html",{"form":PasswordChangeForm(request.POST),'error':"Both Passwods Must Match.","username":username})
+            return render(request,"accounts/change_password.html", {"form":PasswordChangeForm(request.POST),'error':"Both Passwods Must Match.","username":username})
     else:
         form = PasswordChangeForm(username)
         return render(request, 'accounts/change_password.html', {'form': form,"username":username})

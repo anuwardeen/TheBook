@@ -5,9 +5,10 @@
         <div class="row">
             <div class="col-xs-12">
                 <ul class="list-group">
-                    {%for user in users%}
+
+                        {%for user in users%}
                     <li class="list-group-item">
-                        <pre>{{user.username}}   {{user.email}}   <a href="{% url 'edit-user-details' user.pk%}">Edit User Details</a>   <a href="{% url 'delete-user' user.username %}">Delete User</a>    <a href="{% url 'change_password' user.username%}">Change Password</a></pre>
+                        <pre><label class="control-label col-sm-4">{{user.username}}  {{user.email}}</label><a href="{% url 'edit-user-details' user.pk%}">Edit User Details</a>   <a href="{% url 'delete-user' user.username %}">Delete User</a>    <a href="{% url 'change_password' user.username%}">Change Password</a></pre>
                     </li>
                     {%endfor%}
                 </ul>

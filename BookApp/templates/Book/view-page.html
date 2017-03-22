@@ -4,10 +4,13 @@
     <div class="row">
         <div class="col-xs-12">
             <ul class="list-group">
-                <li class="list-group-item">Title ID : {{content.pk}} </li>
-                <li class="list-group-item">Title : {{content.title}} </li>
-                <li class="list-group-item">Content : {{content.content}} </li>
+
+                <li class="list-group-item"><label class="control-label col-sm-1">Page ID</label>{{content.pk}} </li>
+                <li class="list-group-item"><label class="control-label col-sm-1">Title</label>{{content.title}} </li>
+                <li class="list-group-item"><label class="control-label col-sm-1">Content</label>{{content.content}} </li>
+                <li class="list-group-item" ><label class="control-label col-sm-1">Image</label><img  src="{{ content.image.url}}" height="200" width="200" class="img-responsive" /> </li>
                 <li class="list-group-item"><a href="{% url 'edit-page' content.pk%}">Click here to Edit!</a> </li>
+
             </ul>
         </div>
 

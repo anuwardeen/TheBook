@@ -7,7 +7,7 @@
                 <ul class="list-group">
                     <li>
                         <form method="POST" action="{% url 'search'%}">{% csrf_token %}
-                            <input type="text" name="title" class="title" id="title" placeholder="Search..." />
+                            <input type="text" name="title" class="title" id="title" autocomplete="on" placeholder="Search..." />
                             <input type="submit" value="Go">
                         </form>
                     </li>
