@@ -180,11 +180,6 @@ def editUserDetails(request, id=0):
 def changePassword(request, username=""):
     if request.method == 'POST':
         username = request.POST.get('username')
-        # old_pass = request.POST.get('old_password')
-        # djangopass = make_password(old_pass)
-        # userpass = User.objects.filter(username=username).values('password')[0]['password']
-        # print(djangopass)
-        # print(userpass)
         new_pass = request.POST.get('new_password1')
         pwd_confirm = request.POST.get('new_password2')
         if new_pass == pwd_confirm:
@@ -194,10 +189,21 @@ def changePassword(request, username=""):
             user.save()
             return HttpResponseRedirect(reverse("manage-user"))
         else:
-            return render(request,"accounts/change_password.html",{"form":PasswordChangeForm(request.POST),"username":username})
+            return render(request,"accounts/change_password.html",{"form":PasswordChangeForm(request.POST),'error':"Both Passwods Must Match.","username":username})
     else:
         form = PasswordChangeForm(username)
         return render(request, 'accounts/change_password.html', {'form': form,"username":username})
 
 
+    # djangopass = make_password(old_pass)
+    # userpass = User.objects.filter(username=username).values('password')[0]['password']
+    # print(djangopass)
+    # print(userpass)
+    # old_pass = request.POST.get('old_password')
 #####################################################################################################
+
+
+
+
+
+
