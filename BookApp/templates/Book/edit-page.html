@@ -1,16 +1,6 @@
 {% extends "Book/base.html"%}
 {%block content%}
-
-
 <div class="container" style="margin-top:1em;">
-    <script>
-function getPreview(){
-console.log(document.getElementById("id_title").value)
-document.getElementById("modal-title").innerHTML = document.getElementById("form.title").value;
-document.getElementById("modal-content").innerHTML = document.getElementById("form.content").value;}
-document.getElementById("modal-access").innerHTML = document.getElementById("min_accessing_level").value;}
-
-</script>
     <div class="row">
         <div class="col-xs-12" >
             <div class="form-group"><br><br>
@@ -20,10 +10,12 @@ document.getElementById("modal-access").innerHTML = document.getElementById("min
                         <input type="text" id="id" name="id" value="{{id}}" readonly>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Title: </label>{{form.title}}
+                        <label for="title" class="control-label col-sm-2">Title: </label>
+                        <input type="text" id="title" name="title" value="{{form.title.value}}">
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Content:</label> {{form.content}}
+                        <label for="content" class="control-label col-sm-2">Content:</label>
+                        <textarea id="content" rows="5" cols="30" name="content" >{{form.content.value}}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="min_accessing_level" class="control-label col-sm-2" >Min Access Level:</label>
@@ -36,52 +28,54 @@ document.getElementById("modal-access").innerHTML = document.getElementById("min
                         </select>
                     </div>
                     <div class="form-group">
-                        <input class="btn btn-warning" type="submit" value="Submit">
-                        <!--<input class="btn btn-primary" type="button" value="Preview" onclick=getTitleValue() >-->
-                        <button type="button" class="btn btn-primary" onClick=getPreview() data-toggle="modal" data-target="#myModal">Preview</button>
-                        <input class="btn btn-success" type="submit" value="Cancel" onclick="{%url 'view-page' form.title.value%}">
+                        <input class="btn btn-warning" type="submit" value="Submit" >
+                        <a href="{% url 'view-page' form.title.value %}"><input class="btn btn-primary" type="button" value="Cancel" ></a>
+                        <button type="button" class="btn btn-success" onClick=getValue() data-toggle="modal" data-target="#myModal">Preview</button>
 
                     </div>
-
-
-
-
-                    <div class="modal fade" id="myModal" role="dialog">
-                        <div class="modal-dialog">
-                        <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title" id="modal-title">Title: {{form.title}}</h4>
-                                </div>
-                                <div class="modal-body">
-                                        <label for="modal-content" style="float:left">Content:</label>
-                                        <p id="modal-content">{{form.content}}</p>
-                                </div>
-                                    <div class="modal-body">
-                                        <label for="modal-content" style="float:left">Content:</label>
-                                        <p id="modal-access">{{form.min_accessing_level}}</p>
-                                    </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-
-
-
-
                 </form>
-                <!--<form method="GET" class=".form-horizontal" action="{%url 'view-page' form.title.value%}">{% csrf_token %}-->
-                    <!--<div class="form-group">-->
-                        <!--<input class="btn btn-primary" type="submit" value="Cancel">-->
-                    <!--</div>-->
-                <!--</form>-->
+
             </div>
         </div>
     </div>
 </div>
+{%endblock%}
+
+{%block script%}
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <label class="control-label col-sm-2">ID: </label>
+                <p id="modal-id"></p>
+            </div>
+            <div class="modal-header">
+                <label class="control-label col-sm-2">Title: </label>
+                <h4 class="modal-title" id="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <label class="control-label col-sm-2">Content: </label>
+                <p id="modal-content"></p>
+            </div>
+            <div class="modal-body">
+                <label class="control-label col-sm-2">Access Level: </label>
+                <p id="modal-access"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function getValue(){
+document.getElementById("modal-id").innerHTML = document.getElementById("id").value;
+document.getElementById("modal-title").innerHTML = document.getElementById("title").value;
+document.getElementById("modal-content").innerHTML = document.getElementById("content").value;
+document.getElementById("modal-access").innerHTML = document.getElementById("min_accessing_level").value;
+}
+</script>
 {%endblock%}

@@ -8,7 +8,7 @@ from .models import *
 from django.urls import reverse
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-
+from django.contrib.auth.hashers import make_password
 ###################################################################################################
 
 
@@ -33,7 +33,8 @@ def search(request):
 def viewPage(request, topic_name):
 
     topic_list = Topic.objects.values_list('title', flat=True)
-
+    print(topic_list)
+    print(topic_name)
     if topic_name in topic_list:
         obj = AccessLevel.objects.get(user = request.user)
         access_level = obj.access_level
@@ -94,7 +95,9 @@ def editPage(request, topic_id=0):
 
     if request.method=="POST":
         topic_id= request.POST.get('id')
+        print('id')
         title = request.POST.get('title')
+        print(title)
         content = request.POST.get('content')
         access_level =request.POST.get('min_accessing_level')
 
@@ -176,11 +179,22 @@ def editUserDetails(request, id=0):
 
 def changePassword(request, username=""):
     if request.method == 'POST':
-        user=User.objects.get(username=request.POST.get('username'))
-        user.set_password(request.POST.get('new_password1'))
-        update_session_auth_hash(request, user)
-        user.save()
-        return HttpResponseRedirect(reverse("manage-user"))
+        username = request.POST.get('username')
+        # old_pass = request.POST.get('old_password')
+        # djangopass = make_password(old_pass)
+        # userpass = User.objects.filter(username=username).values('password')[0]['password']
+        # print(djangopass)
+        # print(userpass)
+        new_pass = request.POST.get('new_password1')
+        pwd_confirm = request.POST.get('new_password2')
+        if new_pass == pwd_confirm:
+            user=User.objects.get(username=username)
+            user.set_password(new_pass)
+            update_session_auth_hash(request, user)
+            user.save()
+            return HttpResponseRedirect(reverse("manage-user"))
+        else:
+            return render(request,"accounts/change_password.html",{"form":PasswordChangeForm(request.POST),"username":username})
     else:
         form = PasswordChangeForm(username)
         return render(request, 'accounts/change_password.html', {'form': form,"username":username})
