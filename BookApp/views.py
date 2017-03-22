@@ -22,14 +22,14 @@ def index(request):
 
 def search(request):
     if request.method=="POST":
-        title = request.POST.get('title')
+        title = request.POST.get('title') or None
         return HttpResponseRedirect(reverse('view-page',kwargs={'topic_name': title}))
 
 
 ###################################################################################################
 
 @login_required
-def viewPage(request, topic_name):
+def viewPage(request, topic_name=""):
 
     topic_list = Topic.objects.values_list('title', flat=True)
     if topic_name in topic_list:
