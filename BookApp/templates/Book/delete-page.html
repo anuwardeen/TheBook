@@ -1,6 +1,8 @@
 {% extends "Book/base.html" %}
 {%block content%}
 <div id="register" class="animate form" style="padding-left:30px">
+    <h1> Delete Page </h1>
+    <p> List Of Page </p>
     <form method="POST" autocomplete="on" class="form-horizontal">{% csrf_token %}
 
             {%for title in title_list%}
