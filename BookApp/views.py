@@ -53,6 +53,7 @@ def pageNotFound(request, topic_name):
 
 ###################################################################################################
 
+@login_required
 def addComment(request):
     if request.method == "GET":
         return render(request, "Book/access-denied.html")
@@ -76,7 +77,7 @@ def profileView(request):
     user = User.objects.get(username = request.user)
     obj = AccessLevel.objects.get(user=user)
     access_level = obj.access_level
-    return render(request, "Book/profile.html", {"user":user,"access_level":access_level})
+    return render(request, "Profile/profile.html", {"user":user,"access_level":access_level})
 
 ###################################################################################################
 
@@ -96,7 +97,7 @@ def createPage(request):
             return render(request, "Book/create-page.html", {"form":form})
 
 ###################################################################################################
-
+@login_required
 def deletePage(request):
     if request.method == "GET":
         obj = AccessLevel.objects.get(user=request.user)
@@ -104,6 +105,8 @@ def deletePage(request):
         if access_level ==5:
             title_list = Topic.objects.all().values('title')
             return render(request, "Book/delete-page.html", {"title_list": title_list})
+        else:
+            return render(request, "Book/access-denied.html")
 
     if request.method == "POST":
         title_list = request.POST.getlist('title')
@@ -207,7 +210,7 @@ def editUserDetails(request, id=0):
 #####################################################################################################
 
 
-
+@login_required
 def changePassword(request, username=""):
     if request.method == 'POST':
         username = request.POST.get('username')

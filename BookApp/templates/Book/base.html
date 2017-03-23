@@ -28,7 +28,7 @@
 </head>
 <body>
 <div class=" text-center" >
-  <h1>The Book</h1>
+  <h1>The Book </h1>
 </div>
 
 <nav class="navbar navbar-inverse">
@@ -46,7 +46,7 @@
               <li class="active"><a href="{% url 'index' %}">Home</a></li>
               <li><a href="{% url 'add-user' %}">Add Staff</a></li>
               <li><a href="{% url 'manage-user' %}">Manage Staff</a></li>
-              <li><a href="{% url 'delete-page' %}">Delete Topic</a></li>
+              <li><a href="{% url 'delete-page' %}">Delete Page</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
@@ -54,11 +54,7 @@
         </div>
   </div>
 </nav>
-<!--<div class="jumbotron" style="padding-top:0px;height:100px">-->
-  <!--<div class="container text-center" >-->
-    <!--<h1>The Book</h1>-->
-  <!--</div>-->
-<!--</div>-->
+
 
   {%block content%}
     {%endblock%}

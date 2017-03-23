@@ -16,7 +16,7 @@
                 <form method="POST" autocomplete="on" class="form-horizontal" action="{% url 'add-comment' %}">{% csrf_token %}
                     <input type="hidden" id="topic" name="topic" value="{{content.title}}" readonly>
                     <label for="comment" class="control-label col-sm-1">Add Comment:</label>
-                    <textarea rows="3" id="comment" name="comment" cols="100" ></textarea>
+                    <textarea rows="3" id="comment" name="comment" cols="100" required></textarea>
                     <input type="submit" value="Submit">
                 </form>
                 {% if comments%}
