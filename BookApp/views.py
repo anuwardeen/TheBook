@@ -8,7 +8,6 @@ from .models import *
 from django.urls import reverse
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth.hashers import make_password
 ###################################################################################################
 
 
@@ -20,6 +19,7 @@ def index(request):
 
 ###################################################################################################
 
+@login_required
 def search(request):
     if request.method=="POST":
         title = request.POST.get('title') or None
@@ -37,7 +37,8 @@ def viewPage(request, topic_name=""):
         access_level = obj.access_level
         topic= Topic.objects.get(title=topic_name)
         if topic.min_accessing_level <= access_level:
-            return render(request,"Book/view-page.html", {"content":topic})
+            comments = Comment.objects.filter(topic = topic)
+            return render(request,"Book/view-page.html", {"content":topic,"comments":comments})
         else:
             return render(request,"Book/access-denied.html")
     else:
@@ -45,12 +46,32 @@ def viewPage(request, topic_name=""):
 
 ###################################################################################################
 
+@login_required
 def pageNotFound(request, topic_name):
     return render(request,"Book/pagenotfound.html",{"topic_name":topic_name})
 
 
 ###################################################################################################
 
+def addComment(request):
+    if request.method == "GET":
+        return render(request, "Book/access-denied.html")
+
+    if request.method == "POST":
+        title = request.POST.get('topic')
+        comment = request.POST.get('comment')
+        if comment != "":
+            comment+="\t-%s"%(request.user)
+            print(comment)
+            topic = Topic.objects.get(title= title)
+            Comment.objects.create(topic= topic, comment = comment)
+            return HttpResponseRedirect(reverse('view-page',kwargs={'topic_name': title}))
+        else:
+            return HttpResponseRedirect(reverse('view-page', kwargs={'topic_name': title}))
+
+###################################################################################################
+
+@login_required
 def profileView(request):
     user = User.objects.get(username = request.user)
     obj = AccessLevel.objects.get(user=user)
@@ -86,8 +107,8 @@ def deletePage(request):
 
     if request.method == "POST":
         title_list = request.POST.getlist('title')
-    Topic.objects.filter(title__in=title_list).delete()
-    return HttpResponseRedirect(reverse('index'))
+        Topic.objects.filter(title__in=title_list).delete()
+        return HttpResponseRedirect(reverse('index'))
 
 
 ###################################################################################################

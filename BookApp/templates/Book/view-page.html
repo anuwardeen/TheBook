@@ -3,15 +3,32 @@
 <div class="container" style="margin-top:1em;">
     <div class="row">
         <div class="col-xs-12">
-            <ul class="list-group">
+            <li class="list-group">
 
                 <li class="list-group-item"><label class="control-label col-sm-1">Page ID:</label>{{content.pk}} </li>
                 <li class="list-group-item"><label class="control-label col-sm-1">Title:</label>{{content.title}} </li>
                 <li class="list-group-item"><label class="control-label col-sm-1">Content:</label>{{content.content}} </li>
                 <li class="list-group-item" ><label class="control-label col-sm-1">Image:</label><img  src="{{ content.image.url}}" height="200" width="200" class="img-responsive" /> </li>
-                <li class="list-group-item"><a href="{% url 'edit-page' content.pk%}">Click here to Edit!</a> </li>
 
-            </ul>
+                <li class="list-group-item"><a href="{% url 'edit-page' content.pk%}">Click here to Edit!</a> </li>
+                 </ul><br>
+            <div id="register" class="animate form" style="padding-bottom:2%">
+                <form method="POST" autocomplete="on" class="form-horizontal" action="{% url 'add-comment' %}">{% csrf_token %}
+                    <input type="hidden" id="topic" name="topic" value="{{content.title}}" readonly>
+                    <label for="comment" class="control-label col-sm-1">Add Comment:</label>
+                    <textarea rows="3" id="comment" name="comment" cols="100" ></textarea>
+                    <input type="submit" value="Submit">
+                </form>
+                {% if comments%}
+                <li class="list-group-item"><label class="control-label col-sm-1">Comments:</label><br>
+                    <ul class="list-group"><br>
+                        {%for comment in comments%}
+                        <li class="list-group-item">{{comment.comment}}</li>
+                        {%endfor%}
+                    </ul>
+                </li>
+                {%endif%}
+            </div>
         </div>
 
     </div>

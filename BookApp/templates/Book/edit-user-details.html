@@ -1,22 +1,22 @@
 {% extends "Book/base.html" %}
 {%block content%}
-<div id="register" class="animate form">
+<div class="container" style="margin-top:1em;">
     <form method="POST" autocomplete="on" class="form-horizontal">{% csrf_token %}
         <h1> Sign up </h1>
-        <p>
-            <label for="pk" class="pk" >User ID</label>
+        <div class="form-group">
+            <label for="pk" class="control-label col-sm-2" >User ID</label>
             <input id="pk" name="pk" required="required" type="text" value={{user.pk}} readonly/>
-        </p>
-        <p>
-            <label for="username" class="username" >Your username</label>
+        </div>
+        <div class="form-group">
+            <label for="username" class="control-label col-sm-2" >New Username</label>
             <input id="username" name="username" required="required" type="text" value={{user.username}} />
-        </p>
-        <p>
-            <label for="email" class="email" > Your email</label>
+        </div>
+        <div class="form-group">
+            <label for="email" class="control-label col-sm-2" > New EmailID</label>
             <input id="email" name="email" required="required" type="email" value={{user.email}} />
-        </p>
-        <p>
-            <label for="access_level" class="access_level" >Grant Access level for New User</label>
+        </div>
+        <div class="form-group">
+            <label for="access_level" class="control-label col-sm-2" ><Grant></Grant> Access level for New User</label>
             <select name="access_level" id="access_level">
                 <option value=1>1</option>
                 <option selected="selected" value=2>2</option>
@@ -24,11 +24,11 @@
                 <option value=4>4</option>
                 <option value=5>5</option>
             </select>
-        </p>
+        </div>
 
-        <p class="signin button">
-            <input type="submit" value="Submit"/>
-        </p>
+        <div class="control-label col-sm-2">
+            <input type="submit"  value="Submit"/>
+        </div>
 
     </form>
 </div>

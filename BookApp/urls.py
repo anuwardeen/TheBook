@@ -18,6 +18,8 @@ urlpatterns = [
 
     url(r'^create/page/$', views.createPage, name="create-page"),
 
+    url(r'add/comment/', views.addComment, name='add-comment'),
+
     url(r'^edit/page/(?P<topic_id>\d+)/$', views.editPage, name="edit-page"),
 
     url(r'^register/user/$', views.addNewUser.as_view(), name="add-user"),

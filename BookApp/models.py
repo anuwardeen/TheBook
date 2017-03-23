@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Topic(models.Model):
     topic_id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, unique=True)
     content = models.TextField()
     image = models.FileField(null=True, blank=True, default="default.jpeg")
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
@@ -20,3 +20,11 @@ class AccessLevel(models.Model):
 
     def __str__(self):
         return str(self.user)
+
+
+class Comment(models.Model):
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    comment = models.TextField()
+
+    def __str__(self):
+        return self.comment
