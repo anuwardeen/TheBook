@@ -12,7 +12,7 @@ urlpatterns = [
 
     url(r'^view/page/(?P<topic_name>[A-Za-z0-9 -]+)/$',views.viewPage,name="view-page"),
 
-    url(r'^page-not-found/(?P<topic_name>[A-Za-z0-9 -]+)/$', views.pageNotFound ,name="page-not-found"),
+    url(r'^page-not-found/(?P<topic_name>[A-Za-z0-9 :-]+)/$', views.pageNotFound ,name="page-not-found"),
 
     url(r'^delete/page/', views.deletePage, name="delete-page"),
 
